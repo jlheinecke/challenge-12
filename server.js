@@ -1,6 +1,7 @@
 const express = require('express');
-// Import and require mysql2
 const mysql = require('mysql2');
+const inquirer = require('inquirer');
+const fs = require('fs');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -13,14 +14,62 @@ app.use(express.json());
 const db = mysql.createConnection(
   {
     host: 'localhost',
-    // MySQL username,
     user: 'root',
-    // TODO: Add MySQL password here
-    password: '',
-    database: 'movies_db'
+    password: 'Cid7677!',
+    database: 'employee_db'
   },
-  console.log(`Connected to the movies_db database.`)
+  console.log(`Connected to the employee_db database.`)
 );
+
+fs.readFile('db/insert-employee.sql', 'utf8', (err, data) => {
+  if (err) {
+    console.error('Error reading seed file:', err);
+    return;
+  }
+
+  db.query(data, (err, result) => {
+    if (err) {
+      console.error('Error executing seed query:', err);
+      return;
+    }
+
+    console.log('Seed data inserted successfully!');
+   
+  });
+});
+fs.readFile('db/insert-role.sql', 'utf8', (err, data) => {
+  if (err) {
+    console.error('Error reading seed file:', err);
+    return;
+  }
+
+  db.query(data, (err, result) => {
+    if (err) {
+      console.error('Error executing seed query:', err);
+      return;
+    }
+
+    console.log('Seed data inserted successfully!');
+   
+  });
+});
+fs.readFile('db/insert-dept.sql', 'utf8', (err, data) => {
+  if (err) {
+    console.error('Error reading seed file:', err);
+    return;
+  }
+
+  db.query(data, (err, result) => {
+    if (err) {
+      console.error('Error executing seed query:', err);
+      return;
+    }
+
+    console.log('Seed data inserted successfully!');
+   
+  });
+});
+
 
 // Create a movie
 app.post('/api/new-movie', ({ body }, res) => {
